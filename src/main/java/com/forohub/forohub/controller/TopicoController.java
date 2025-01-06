@@ -1,10 +1,8 @@
 package com.forohub.forohub.controller;
 
-import com.forohub.forohub.model.topico.DatosListadoTopico;
-import com.forohub.forohub.model.topico.DatosRegistroTopico;
+import com.forohub.forohub.model.topico.*;
 import com.forohub.forohub.repository.TopicoRepository;
-import com.forohub.forohub.model.topico.DatosRespuestaTopico;
-import com.forohub.forohub.model.topico.Topico;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +37,14 @@ public class TopicoController {
         return ResponseEntity.ok(topicoRepository.findAll(paginacion).map(DatosListadoTopico::new));
     }
 
+    @PutMapping
+    @Transactional
+    public ResponseEntity actualizarTopico(@RequestBody @Valid DatosActualizarTopico datosActualizarTopico) {
+        Topico topico = topicoRepository.getReferenceById(datosActualizarTopico.id());
+        topico.actualizarDatos(datosActualizarTopico);
+        return ResponseEntity.ok(new DatosRespuestaTopico(topico.getId(),topico.getTitulo(),topico.getMensaje(),topico.getFechaCreacion(),
+                topico.getStatus(),topico.getUsuarioId(),topico.getCursoId()));
+    }
     @GetMapping("/{id}")
     public ResponseEntity<DatosRespuestaTopico> retornaDatosTopico(@PathVariable Long id) {
         Topico topico = topicoRepository.getReferenceById(id);
@@ -46,6 +52,10 @@ public class TopicoController {
                 topico.getStatus(),topico.getUsuarioId(),topico.getCursoId());
         return ResponseEntity.ok(datosTopico);
     }
-
-
+    @DeleteMapping("/{id}")
+    @Transactional
+    public void  eliminarMedico(@PathVariable Long id) {
+        Topico topico = topicoRepository.getReferenceById(id);
+        topicoRepository.delete(topico);
+    }
 }
