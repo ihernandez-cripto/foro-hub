@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
+
 @Table(name = "topico")
 @Entity(name = "Topico")
 @Getter
@@ -31,9 +32,8 @@ public class Topico {
     public Topico(DatosRegistroTopico datosRegistroTopico){
         this.titulo = datosRegistroTopico.titulo();
         this.mensaje = datosRegistroTopico.mensaje();
-        this.status = datosRegistroTopico.status();
+        this.status = "ACTIVO";
         this.usuarioId = datosRegistroTopico.usuarioId();
         this.cursoId = datosRegistroTopico.cursoId();
     }
-
 }
