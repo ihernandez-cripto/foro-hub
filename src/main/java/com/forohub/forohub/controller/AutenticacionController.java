@@ -1,6 +1,7 @@
 package com.forohub.forohub.controller;
 
 import com.auth0.jwt.JWT;
+import com.forohub.forohub.infra.security.DatosJWTtoken;
 import com.forohub.forohub.infra.security.TokenService;
 import com.forohub.forohub.model.usuario.DatosLogin;
 import com.forohub.forohub.model.usuario.Usuario;
@@ -27,10 +28,10 @@ public class AutenticacionController {
     @PostMapping
     public ResponseEntity autenticacionUsuario(@RequestBody @Valid DatosLogin datosLogin) {
 
-         Authentication authtoken = new UsernamePasswordAuthenticationToken(datosLogin.correoElectronico(),datosLogin.contrasena());
+        Authentication authtoken = new UsernamePasswordAuthenticationToken(datosLogin.correoElectronico(),datosLogin.contrasena());
         var usuarioAutenticado = authenticationManager.authenticate(authtoken);
         var JWTtoken = tokenService.generarToken((Usuario) usuarioAutenticado.getPrincipal());
-        return ResponseEntity.ok(JWTtoken);
+        return ResponseEntity.ok(new DatosJWTtoken(JWTtoken));
 
     }
 }
