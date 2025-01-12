@@ -15,9 +15,5 @@ public record DatosRegistroUsuario(
                 message = "La contraseña debe contener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial.")
         String contrasena)
 {
-        @Override
-        public String contrasena() {
-                return contrasena;
-        }
 
 }

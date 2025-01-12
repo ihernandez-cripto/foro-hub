@@ -1,6 +1,7 @@
 package com.forohub.forohub.controller;
 
 import com.forohub.forohub.infra.security.AutenticacionService;
+import com.forohub.forohub.infra.security.UsuarioService;
 import com.forohub.forohub.model.usuario.DatosRegistroUsuario;
 import com.forohub.forohub.model.usuario.Usuario;
 import com.forohub.forohub.repository.UsuarioRepository;
@@ -19,17 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class UsuarioController {
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private UsuarioService usuarioService;
 
     @PostMapping
     @Transactional
     public void registrarUsuario(@RequestBody @Valid DatosRegistroUsuario datosRegistroUsuario) {
-        String hashedPassword = passwordEncoder.encode(datosRegistroUsuario.contrasena());
-        System.out.println(hashedPassword);
-        usuarioRepository.save(new Usuario(datosRegistroUsuario));
+        usuarioService.crearUsuario(datosRegistroUsuario);
     }
 
 }
