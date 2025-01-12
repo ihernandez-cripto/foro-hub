@@ -1,0 +1,1 @@
+alter table usuario MODIFY column contrasena varchar(255);
