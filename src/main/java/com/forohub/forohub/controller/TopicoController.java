@@ -41,19 +41,12 @@ public class TopicoController {
     @Transactional
     public ResponseEntity actualizarTopico(@RequestBody @Valid DatosActualizarTopico datosActualizarTopico) {
         return topicoService.modificaTopico(datosActualizarTopico);
-    //    Topico topico = topicoRepository.getReferenceById(datosActualizarTopico.id());
-    //    topico.actualizarDatos(datosActualizarTopico);
-    //    return ResponseEntity.ok(new DatosRespuestaTopico(topico.getId(),topico.getTitulo(),topico.getMensaje(),topico.getFechaCreacion(),
-    //            topico.getStatus(),topico.getUsuarioId(),topico.getCursoId()));
     }
     @GetMapping("/{id}")
     public ResponseEntity<DatosRespuestaTopico> retornaDatosTopico(@PathVariable Long id) {
         return topicoService.consultaTopico(id);
-    //    Topico topico = topicoRepository.getReferenceById(id);
-    //    var datosTopico = new DatosRespuestaTopico(topico.getId(),topico.getTitulo(),topico.getMensaje(),topico.getFechaCreacion(),
-    //            topico.getStatus(),topico.getUsuarioId(),topico.getCursoId());
-    //    return ResponseEntity.ok(datosTopico);
     }
+
     @DeleteMapping("/{id}")
     @Transactional
     public void  eliminarMedico(@PathVariable Long id) {
