@@ -6,8 +6,8 @@ public record DatosRespuestaTopico(
         String mensaje,
         String fechaCreacion,
         String status,
-        Long usuarioId,
-        Long cursoId
+        String userName,
+        String nombre
 ) {
 
 }

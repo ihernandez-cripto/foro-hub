@@ -24,11 +24,13 @@ public class Respuesta {
     String fechaCreacion;
     String solucion;
     Long usuarioId;
+    Long topicoId;
 
     public Respuesta(DatosRegistroRespuesta datosRegistroRespuesta){
         this.mensaje = datosRegistroRespuesta.mensaje();
-        this.solucion = datosRegistroRespuesta.respuesta();
+        this.solucion = datosRegistroRespuesta.solucion();
         this.usuarioId = datosRegistroRespuesta.usuarioId();
+        this.topicoId = datosRegistroRespuesta.topicoId();
     }
 
 }
