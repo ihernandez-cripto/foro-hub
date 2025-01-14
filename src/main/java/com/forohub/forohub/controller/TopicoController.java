@@ -1,5 +1,6 @@
 package com.forohub.forohub.controller;
 
+import com.forohub.forohub.infra.rules.TopicoService;
 import com.forohub.forohub.model.topico.*;
 import com.forohub.forohub.repository.TopicoRepository;
 import jakarta.transaction.Transactional;
@@ -22,14 +23,13 @@ import java.net.URI;
 public class TopicoController {
     @Autowired
     private TopicoRepository topicoRepository;
+    @Autowired
+    private TopicoService topicoService;
     
     @PostMapping
     public ResponseEntity<DatosRespuestaTopico> registrarTopico(@RequestBody @Valid DatosRegistroTopico datosRegistroTopico, UriComponentsBuilder uriComponentsBuilder) {
-        Topico topicoRegistrado = topicoRepository.save(new Topico(datosRegistroTopico));
-       DatosRespuestaTopico datosRespuestaTopico = new DatosRespuestaTopico(topicoRegistrado.getId(),topicoRegistrado.getTitulo(),topicoRegistrado.getMensaje(),
-               topicoRegistrado.getFechaCreacion(),topicoRegistrado.getStatus(),topicoRegistrado.getUsuarioId(),topicoRegistrado.getCursoId());
-       URI url = uriComponentsBuilder.path("/topico/{id}").buildAndExpand(topicoRegistrado.getId()).toUri();
-       return ResponseEntity.created(url).body(datosRespuestaTopico);
+       Topico topicoRegistrado = topicoService.registrarTopico(datosRegistroTopico);
+       return topicoService.detalleTopico(topicoRegistrado, uriComponentsBuilder);
     }
 
     @GetMapping
@@ -40,18 +40,13 @@ public class TopicoController {
     @PutMapping
     @Transactional
     public ResponseEntity actualizarTopico(@RequestBody @Valid DatosActualizarTopico datosActualizarTopico) {
-        Topico topico = topicoRepository.getReferenceById(datosActualizarTopico.id());
-        topico.actualizarDatos(datosActualizarTopico);
-        return ResponseEntity.ok(new DatosRespuestaTopico(topico.getId(),topico.getTitulo(),topico.getMensaje(),topico.getFechaCreacion(),
-                topico.getStatus(),topico.getUsuarioId(),topico.getCursoId()));
+        return topicoService.modificaTopico(datosActualizarTopico);
     }
     @GetMapping("/{id}")
     public ResponseEntity<DatosRespuestaTopico> retornaDatosTopico(@PathVariable Long id) {
-        Topico topico = topicoRepository.getReferenceById(id);
-        var datosTopico = new DatosRespuestaTopico(topico.getId(),topico.getTitulo(),topico.getMensaje(),topico.getFechaCreacion(),
-                topico.getStatus(),topico.getUsuarioId(),topico.getCursoId());
-        return ResponseEntity.ok(datosTopico);
+        return topicoService.consultaTopico(id);
     }
+
     @DeleteMapping("/{id}")
     @Transactional
     public void  eliminarMedico(@PathVariable Long id) {
