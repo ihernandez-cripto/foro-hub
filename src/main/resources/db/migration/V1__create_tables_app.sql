@@ -2,7 +2,7 @@ CREATE TABLE usuario (
   id 			     bigint 		NOT NULL auto_increment PRIMARY KEY,
   nombre 		     VARCHAR(45) 	NOT NULL,
   correo_electronico VARCHAR(45) 	NOT NULL UNIQUE,
-  contrasena 		 VARCHAR(45) 	NOT NULL
+  contrasena 		 VARCHAR(255) 	NOT NULL
 );
 
 CREATE TABLE perfil (
@@ -48,4 +48,24 @@ CREATE TABLE respuesta (
   FOREIGN KEY (usuario_id)  REFERENCES usuario(id),
   FOREIGN KEY (topico_id)   REFERENCES topico(id)
 );
+
+INSERT INTO `forohub`.`usuario`
+(`id`,
+`nombre`,
+`correo_electronico`,
+`contrasena`)
+VALUES
+(1,
+'admin',
+'admin@one.com',
+'$2a$10$qQ.chIgBeOqd8Ycm1yZINeCdV3YN41J60zErQmchRsod2Mf3RSBb2');
+
+INSERT INTO `forohub`.`curso`
+(`id`,
+`nombre`,
+`categoria`)
+VALUES
+(1,
+'curso basico',
+'educacion general');
 
