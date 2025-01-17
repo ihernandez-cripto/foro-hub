@@ -1,5 +1,6 @@
 package com.forohub.forohub.infra.rules;
 
+import com.forohub.forohub.infra.errores.ValidarException;
 import com.forohub.forohub.model.curso.Curso;
 import com.forohub.forohub.model.topico.DatosActualizarTopico;
 import com.forohub.forohub.model.topico.DatosRegistroTopico;
@@ -31,8 +32,8 @@ public class TopicoService {
     private TopicoRepository topicoRepository;
 
     public Topico registrarTopico(DatosRegistroTopico datosRegistroTopico) {
-        usuario = usuarioRepository.findById(datosRegistroTopico.usuarioId()).get();
-        curso = cursoRepository.findById(datosRegistroTopico.cursoId()).get();
+        Usuario usuario = obtenerUsuario(datosRegistroTopico.usuarioId());
+        Curso curso = obtenerCurso(datosRegistroTopico.cursoId());
         var topico = new Topico(null,datosRegistroTopico.titulo(),datosRegistroTopico.mensaje(),null,
                 datosRegistroTopico.status(),usuario.getId(),curso.getId());
         topicoRepository.save(topico);
@@ -40,8 +41,8 @@ public class TopicoService {
     }
 
     public ResponseEntity detalleTopico(Topico topicoRegistrado, UriComponentsBuilder uriComponentsBuilder) {
-        usuario = usuarioRepository.findById(topicoRegistrado.getUsuarioId()).get();
-        curso = cursoRepository.findById(topicoRegistrado.getCursoId()).get();
+        Usuario usuario = obtenerUsuario(topicoRegistrado.getUsuarioId());
+        Curso curso = obtenerCurso(topicoRegistrado.getCursoId());
         DatosRespuestaTopico datosRespuestaTopico = new DatosRespuestaTopico(topicoRegistrado.getId(),topicoRegistrado.getTitulo(),topicoRegistrado.getMensaje(),
                 topicoRegistrado.getFechaCreacion(),topicoRegistrado.getStatus(),usuario.getNombre(),curso.getNombre());
         URI url = uriComponentsBuilder.path("/topico/{id}").buildAndExpand(topicoRegistrado.getId()).toUri();
@@ -50,8 +51,8 @@ public class TopicoService {
 
     public ResponseEntity modificaTopico(DatosActualizarTopico datosActualizarTopico) {
         Topico topico = topicoRepository.getReferenceById(datosActualizarTopico.id());
-        usuario = usuarioRepository.findById(topico.getUsuarioId()).get();
-        curso = cursoRepository.findById(topico.getCursoId()).get();
+        Usuario usuario = obtenerUsuario(topico.getUsuarioId());
+        Curso curso = obtenerCurso(topico.getCursoId());
         topico.actualizarDatos(datosActualizarTopico);
         return ResponseEntity.ok(new DatosRespuestaTopico(topico.getId(),topico.getTitulo(),topico.getMensaje(),topico.getFechaCreacion(),
                 topico.getStatus(),usuario.getNombre(),curso.getNombre()));
@@ -59,10 +60,21 @@ public class TopicoService {
 
     public ResponseEntity consultaTopico(Long id) {
         Topico topico = topicoRepository.getReferenceById(id);
-        usuario = usuarioRepository.findById(topico.getUsuarioId()).get();
-        curso = cursoRepository.findById(topico.getCursoId()).get();
+        Usuario usuario = obtenerUsuario(topico.getUsuarioId());
+        Curso curso = obtenerCurso(topico.getCursoId());
         var datosTopico = new DatosRespuestaTopico(topico.getId(),topico.getTitulo(),topico.getMensaje(),topico.getFechaCreacion(),
                 topico.getStatus(),usuario.getNombre(),curso.getNombre());
         return ResponseEntity.ok(datosTopico);
     }
+
+    private Usuario obtenerUsuario(Long usuarioId) {
+        return usuarioRepository.findById(usuarioId).orElseThrow(() -> new ValidarException("No existe un usuario con el id informado"));
+
+    }
+
+    private Curso obtenerCurso(Long cursoId) {
+        return cursoRepository.findById(cursoId).orElseThrow(() -> new ValidarException("No existe un curso con el id informado"));
+
+    }
+
 }
