@@ -52,5 +52,8 @@ La contraseña del usuario debe cumplir unos requisitos
 
 ![12 valida_contrasena](https://github.com/user-attachments/assets/50dbcd10-1eb2-4f53-b54f-6e5198425ae8)
 
+## Documentación de la aplicación
+### http://localhost:8081/v3/api-docs
+### http://localhost:8081/swagger-ui/index.html
 
 
