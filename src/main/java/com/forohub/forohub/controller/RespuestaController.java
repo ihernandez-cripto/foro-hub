@@ -1,12 +1,10 @@
 package com.forohub.forohub.controller;
 
 import com.forohub.forohub.model.respuesta.DatosDetalleRespuesta;
-import com.forohub.forohub.model.respuesta.DatosDetalleRespuesta;
 import com.forohub.forohub.model.respuesta.DatosRegistroRespuesta;
 import com.forohub.forohub.model.respuesta.Respuesta;
-import com.forohub.forohub.model.topico.DatosRespuestaTopico;
-import com.forohub.forohub.model.topico.Topico;
 import com.forohub.forohub.repository.RespuestaRepository;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +19,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("respuesta")
+@SecurityRequirement(name = "bearer-key")
 public class RespuestaController {
     @Autowired
     private RespuestaRepository respuestaRepository;

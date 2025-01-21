@@ -3,6 +3,7 @@ package com.forohub.forohub.controller;
 import com.forohub.forohub.infra.rules.TopicoService;
 import com.forohub.forohub.model.topico.*;
 import com.forohub.forohub.repository.TopicoRepository;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
@@ -14,12 +15,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
-
-
 
 @RestController
 @RequestMapping("/topico")
+@SecurityRequirement(name = "bearer-key")
 public class TopicoController {
     @Autowired
     private TopicoRepository topicoRepository;
