@@ -1,6 +1,6 @@
 package com.forohub.forohub.controller;
 
-import com.auth0.jwt.JWT;
+
 import com.forohub.forohub.infra.security.DatosJWTtoken;
 import com.forohub.forohub.infra.security.TokenService;
 import com.forohub.forohub.model.usuario.DatosLogin;
